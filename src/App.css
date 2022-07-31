@@ -1,5 +1,14 @@
+
+body {
+  cursor: url('./assets/pikachu_cursor.gif');
+}
+
+
 .App {
   text-align: center;
+  margin: none;
+  padding: none;
+
 }
 
 .App-logo {
