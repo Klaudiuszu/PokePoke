@@ -1,18 +1,22 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import React from "react";
 import axios from "axios";
 import Particles from "react-tsparticles";
 import { motion, useMotionValue, useTransform } from "framer-motion";
 
+import FilterPokemon from "../../components/FilterProduct/FilterPokemon";
+
+import FilterCards from "../../components/FilterProduct/FilterCards";
+
 import { images } from "../../utils";
 import "./Header.scss";
 
 function Header() {
-  const [limit, setLimit] = useState(10);
+  const [limit, setLimit] = useState(100);
   const [offset, setOffset] = useState(0);
   const [pokemonList, setPokemonLIst] = useState<any[]>([]);
   const [detailsPokemon, setDetailsPokemon] = useState<any[]>([]);
-  const [value, setValue] = useState("");
+  const [filterElement, setFilterElement] = useState("");
 
   useEffect(() => {
     const fetchPokemons = async () => {
@@ -45,86 +49,45 @@ function Header() {
     fetchPokemons();
   }, [limit, offset]);
 
-  const [items, setItems] = useState(detailsPokemon);
+  //------------------------------------------
+  
+  const filterPokemons = (event :any) => {
+      const filteredPokemons = detailsPokemon.filter(
+        pokemon => (`${pokemon.types[0].type.name}`.toLowerCase().includes(filterElement))
+      );
+      setDetailsPokemon(filteredPokemons)
+      console.log(detailsPokemon)
+    };
 
-  const filterItem = (categItem: string) => {
-    const updatedItems = detailsPokemon.filter((currentElement) => {
-        return currentElement.types[0].type.name === categItem;
-    });
-    setItems(updatedItems);
-    console.log("dzial")
-  }
+    console.log(filterPokemons)
 
-  console.log(detailsPokemon);
+
+
+  //------------------------------------------
 
   return (
     <div className="app__Header">
       <div className="app__Header-content">
         <div className="app__Header-list">
           <h2>Filter by type:</h2>
-          <div className="app__Header-select">
-            <select id="default_select">
-              <option value="No filter">No filter</option>
-              <option 
-                value="name"
-                onChange={() => filterItem('name')}                
-                >name</option>
-              <option value="fighting">fighting</option>
-              <option value="flying">flying</option>
-              <option value="poison">poison</option>
-              <option value="ground">ground</option>
-              <option value="rock">rock</option>
-              <option value="bug">bug</option>
-              <option value="ghost">ghost</option>
-              <option value="steel">steel</option>
-              <option value="fire"
-                onClick={() => filterItem('fire')
-} 
-                >fire</option>
-              <option value="water">water</option>
-              <option value="grass">grass</option>
-              <option value="electric">electric</option>
-              <option value="psychic">psychic</option>
-              <option value="ice">ice</option>
-              <option value="dragon">dragon</option>
-              <option value="dark">dark</option>
-              <option value="fairy">fairy</option>
-            </select>
-          </div>
+          <FilterPokemon 
+          setFilterPokemons= {setFilterElement}
+          
+          />
+
           <div className="button-fetch">
             <button>See pokemons!</button>
           </div>
         </div>
+
         <div className="app__Header-display">
-        {detailsPokemon.map((elem) => {
-          const { id, name, weight, front_default } = elem;
-
-          return (
-              <div key={id} className="app__Header-card">
-                <div className="app__Header-img">
-                  <img src={elem.sprites.front_default} />
-                </div>
-                <div className="app__Header-content">
-                  <tr>
-                    <td>name:</td>
-                    <td>{name}</td>
-                  </tr>
-                  <tr>
-                    <td>type:</td>
-                    <td>{elem.types[0].type.name}</td>
-                  </tr>
-                  <tr>
-                    <td>weight:</td>
-                    <td>{weight}</td>
-                  </tr>
-                </div>
-              </div>
-          );
-        })}
-        </div>
-
-        {/* <div className="app__Header-display">
-          {detailsPokemon.map((item) => (
+          {detailsPokemon.map((pokemon, index) => (
+            <FilterCards 
+            detailsPokemon={pokemon} 
+            key={index} 
+            />
+          ))}
+          {/* {detailsPokemon.map((item) => (
             <div key={item.id} className="app__Header-card">
               <div className="app__Header-img">
                 <img src={item.sprites.front_default} />
@@ -144,8 +107,8 @@ function Header() {
                 </tr>
               </div>
             </div>
-          ))}
-        </div> */}
+          ))} */}
+        </div>
       </div>
     </div>
   );
