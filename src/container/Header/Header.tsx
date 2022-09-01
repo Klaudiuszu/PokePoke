@@ -50,7 +50,7 @@ function Header() {
   }, [limit, offset]);
 
   //------------------------------------------
-  
+  //znalazlem rozwiązanie na filtrowanie elementów, stan filtered Pokemons powinien wyświetlać mi elementy przefiltrowane po kliknięciu natomiast wlaśnie nie wiem jak przekazać ten stan z filterPokemon. Wcześniej miałem to wszystko w jednym komponencie ale to filtrowanie raz działalo raz nie działało
   const filterPokemons = (event :any) => {
       const filteredPokemons = detailsPokemon.filter(
         pokemon => (`${pokemon.types[0].type.name}`.toLowerCase().includes(filterElement))

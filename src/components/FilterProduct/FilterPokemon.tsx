@@ -1,6 +1,7 @@
 import '../../container/Header/Header.scss';
 let FilterPokemon = ({setFilterPokemons}: {setFilterPokemons: any}) => {
 
+  //tutaj znajduje nazwę opcji którą wybieram natomiast nie wiem jak tą zmienną przekazać jako props do okmponentu Header (wcześniej miałem wszystko w jednym komponencie ale chciałem spróbować właśnie to podzielić )
   const optionSelected = (event: any) => {
     setFilterPokemons(event.target.value);
   }
